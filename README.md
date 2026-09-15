@@ -137,17 +137,15 @@ Este projeto foi desenvolvido a partir da videoaula da **Luiza Vieira — vbluui
 
 - 👩‍💻 **Luiza Vieira** — [@vbluuiza](https://github.com/vbluuiza)
 - 📂 Repositório original: [pipeline_etl_weather_data_tutorial_youtube](https://github.com/vbluuiza/pipeline_etl_weather_data_tutorial_youtube)
-- 🎥 Canal no YouTube — busque por `vbluuiza`
+- 🎥 Canal no YouTube: [@vbluuiza](https://www.youtube.com/@vbluuiza)
 - 💼 LinkedIn: [linkedin.com/in/vbluuiza](https://www.linkedin.com/in/vbluuiza)
-- 📸 Instagram: [@vbluuiza](https://www.instagram.com/vbluuiza)
-- 📬 Contato/parcerias: `luuiza.empresarial@gmail.com`
 
 **Links citados no vídeo:**
 
 - 📄 Documentação completa do projeto (Google Docs) — link no vídeo original
 - 🔀 Padrão de Commits: [Guia no Notion](https://fair-organ-4e1.notion.site/Guia-de-Padrao-de-Commits-553a7d8f95b2494e98474d0b8d2386c5)
 
-> Se este repositório te ajudou, deixe uma ⭐ e considere se inscrever no canal da Luiza!
+> Se este repositório te ajudou, deixe uma ⭐ e se inscreva no canal da Luiza: https://www.youtube.com/@vbluuiza
 
 ---
 
