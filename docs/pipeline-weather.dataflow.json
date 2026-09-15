@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "Pipeline Weather — Fluxo ETL + Docker",
+    "subtitle": "OpenWeather → Airflow (Docker) → Postgres (aula_weather.go_weather) → pgAdmin",
+    "quality_profile": "showcase",
+    "viewBox": [1080, 560],
+    "views": [
+      { "id": "fluxo-etl", "label": "Fluxo ETL", "focus": ["api", "extract", "rawjson", "transform", "parquet", "load", "postgres"], "note": "Caminho feliz ETL dentro dos containers Docker." },
+      { "id": "docker-infra", "label": "Docker + Persistência", "focus": ["extract", "initdb", "postgres"], "note": "Init cria DB e volume persiste tabela go_weather." },
+      { "id": "consumo", "label": "Consumo", "focus": ["postgres", "pgadmin"], "note": "Visualização final no pgAdmin via 5433:5432." }
+    ]
+  },
+  "stages": [
+    { "label": "Fonte" },
+    { "label": "Extract" },
+    { "label": "Transform" },
+    { "label": "Load" },
+    { "label": "Store/Consulta" }
+  ],
+  "nodes": [
+    { "id": "initdb", "type": "backend", "label": "init-db", "sublabel": "01-init-aula_weather.sql", "tag": "CREATE DB UTF8", "stage": 0, "row": 0 },
+    { "id": "api", "type": "external", "label": "OpenWeather API", "sublabel": "q=GOIANIA,BR", "tag": "HTTPS JSON", "stage": 0, "row": 2 },
+    { "id": "extract", "type": "backend", "label": "Airflow DAG", "sublabel": "extract()", "tag": "extract_data.py", "stage": 1, "row": 0 },
+    { "id": "rawjson", "type": "cloud", "label": "weather_data.json", "sublabel": "/opt/airflow/data", "tag": "UTF-8", "stage": 1, "row": 2 },
+    { "id": "transform", "type": "backend", "label": "Transform", "sublabel": "data_transformations()", "tag": "pandas", "stage": 2, "row": 0 },
+    { "id": "parquet", "type": "cloud", "label": "temp_data.parquet", "sublabel": "/opt/airflow/data", "tag": "parquet", "stage": 2, "row": 2 },
+    { "id": "load", "type": "backend", "label": "Load", "sublabel": "load_weather_data()", "tag": "to_sql append", "stage": 3, "row": 1 },
+    { "id": "postgres", "type": "database", "label": "Postgres 16", "sublabel": "aula_weather.go_weather", "tag": "5432 → 5433", "stage": 4, "row": 0 },
+    { "id": "pgadmin", "type": "frontend", "label": "pgAdmin", "sublabel": "View/Edit Data", "tag": "localhost:5433", "stage": 4, "row": 2 }
+  ],
+  "flows": [
+    { "id": "f1", "from": "api", "to": "extract", "label": "GET /weather" },
+    { "id": "f2", "from": "extract", "to": "rawjson", "label": "json.dump", "labelDy": 30 },
+    { "id": "f3", "from": "rawjson", "to": "transform", "label": "json_normalize", "labelDy": -18 },
+    { "id": "f4", "from": "transform", "to": "parquet", "label": "to_parquet", "labelDy": 30 },
+    { "id": "f5", "from": "parquet", "to": "load", "label": "read_parquet" },
+    { "id": "f6", "from": "load", "to": "postgres", "label": "INSERT append" },
+    { "id": "f7", "from": "postgres", "to": "pgadmin", "label": "SELECT *", "labelDy": 30 },
+    { "id": "f8", "from": "initdb", "to": "postgres", "label": "CREATE DATABASE", "variant": "security", "route": "top-channel", "channelY": 40 }
+  ],
+  "cards": [
+    { "dot": "cyan", "title": "Docker Compose", "items": ["postgres:16 (DB aula_weather) + airflow:3.3.1 LocalExecutor", "Volumes: init-db:/docker-entrypoint-initdb.d, ./data:/opt/airflow/data, ./dags, ./src", "Expose 5433:5432 para pgAdmin no Windows (era o motivo do 'tabela não aparece')"] },
+    { "dot": "emerald", "title": "ETL em 3 tasks (dags/weather_dag.py:23)", "items": ["extract() → weather_data.json (requests.get openweathermap)", "transform() → temp_data.parquet (pandas json_normalize + rename)", "load() → go_weather via SQLAlchemy psycopg2 (5432)"] },
+    { "dot": "amber", "title": ".gitignore essencial", "items": ["Removido *.sql e /config blankets — init-db/*.sql agora versionado", "Só config/.env e data/*.json/*.parquet ignorados (segredos + artefatos)", "Visíveis: dags/, src/, init-db/, docker-compose.yaml, notebooks/"] }
+  ]
+}

@@ -1,0 +1,68 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+venv/
+env/
+ENV/
+
+# Environment variables e credenciais
+.env
+.env.local
+.env.*.local
+config/.env
+config/*.env
+*.key
+*.pem
+credentials.json
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb_checkpoints/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Database (mantém init-db/*.sql versionado)
+*.db
+*.sqlite
+*.sqlite3
+
+# Logs
+*.log
+logs/
+
+# Airflow runtime (gerado pelo standalone)
+airflow.db
+airflow.cfg
+webserver_config.py
+standalone_admin_password.txt
+
+# Dados temporários - artefatos ETL (não versionar)
+data/temp/
+data/*.json
+data/*.parquet
+data/*.csv
+data/*.xlsx
+src/data/
+*.tmp
+
+# Backup files
+*.bak
+*.backup
+# Docker
+.docker/
+docker-compose.override.yml
+.dockerignore
+postgres-db-volume/

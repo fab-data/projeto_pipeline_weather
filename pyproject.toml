@@ -1,0 +1,21 @@
+[project]
+name = "projeto-pipeline-weather"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12 , <3.14"
+dependencies = [
+    "logging>=0.4.9.6",
+    "pandas>=3.0.5",
+    "psycopg2-binary>=2.9.13",
+    "python-dotenv>=1.2.3",
+    "requests>=2.34.2",
+    "sqlalchemy>=2.0.52",
+]
+
+[project.scripts]
+projeto-pipeline-weather = "projeto_pipeline_weather:main"
+
+[build-system]
+requires = ["uv_build>=0.12.13,<0.13.0"]
+build-backend = "uv_build"
